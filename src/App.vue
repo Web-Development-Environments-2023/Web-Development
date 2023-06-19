@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
-      <router-link :to="{ name: 'search' }">Search</router-link>|
-      {{ !$root.store.username }}
-      <span v-if="!$root.store.username">
-        Guest:
-        <router-link :to="{ name: 'register' }">Register</router-link>|
-        <router-link :to="{ name: 'login' }">Login</router-link>|
-      </span>
-      <span v-else>
-        {{ $root.store.username }}: <button @click="Logout">Logout</button>|
-      </span>
-    </div>
+    <nav style="background-color: #f0f0f0; padding: 10px; display: flex; justify-content: space-between;">
+      <div style="display: flex;">
+        <router-link :to="{ name: 'main' }" style="text-decoration: none; color: #333; margin-right: 10px;">Vue Recipes</router-link>
+        <router-link :to="{ name: 'search' }" style="text-decoration: none; color: #333; margin-right: 10px;">Search</router-link>
+      </div>
+      <div style="display: flex;">
+        <span v-if="!$root.store.username">
+          <router-link :to="{ name: 'register' }" style="text-decoration: none; color: #333; margin-right: 10px;">Register</router-link>
+          <router-link :to="{ name: 'login' }" style="text-decoration: none; color: #333; margin-right: 10px;">Login</router-link>
+        </span>
+        <span v-else>
+          <span style="margin-right: 10px;">{{ $root.store.username }}</span>
+          <button @click="logout" style="background-color: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 4px;">Logout</button>
+        </span>
+      </div>
+    </nav>
     <router-view />
   </div>
 </template>
