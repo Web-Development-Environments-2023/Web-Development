@@ -1,5 +1,5 @@
 <template>
-  <!-- <div id="app">
+  <div id="app">
     <div id="nav">
       <router-link :to="{ name: 'main' }">Vue Recipes</router-link>|
       <router-link :to="{ name: 'search' }">Search</router-link>|
