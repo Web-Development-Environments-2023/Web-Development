@@ -6,7 +6,7 @@
                 <b-form-input id="Username" v-model="$v.form.username.$model" type="text"
                     :state="validateState('username')"></b-form-input>
                 <b-form-invalid-feedback>
-                    Username is required
+                    Username is required.
                 </b-form-invalid-feedback>
             </b-form-group>
 
@@ -14,7 +14,7 @@
                 <b-form-input id="Password" type="password" v-model="$v.form.password.$model"
                     :state="validateState('password')"></b-form-input>
                 <b-form-invalid-feedback>
-                    Password is required
+                    Password is required.
                 </b-form-invalid-feedback>
             </b-form-group>
 
@@ -28,9 +28,6 @@
         <b-alert class="mt-2" v-if="form.submitError" variant="warning" dismissible show>
             Login failed: {{ form.submitError }}
         </b-alert>
-        <!-- <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card> -->
     </div>
 </template>
 
