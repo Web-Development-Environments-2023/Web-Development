@@ -66,9 +66,9 @@ export default {
   margin: 0 10px;
   vertical-align: middle;
 }
-.navbar-nav > li {
+
+.navbar-nav>li {
   display: flex;
   align-items: center;
 }
-
 </style>
