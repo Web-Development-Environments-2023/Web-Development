@@ -70,7 +70,6 @@ export default {
                         password: this.form.password
                     }
                 );
-                console.log(this.$root.store.login);
                 this.$root.store.login(this.form.username);
                 this.$router.push("/");
             } catch (err) {
