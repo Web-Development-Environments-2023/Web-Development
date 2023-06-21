@@ -4,38 +4,39 @@
             <b-navbar-brand href="#">RecipeWebsite</b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-navbar-nav class="align-items-center">
-                <b-nav-item :to="{ name: 'main' }">HOME</b-nav-item>
+                <b-nav-item :to="{ name: 'main' }">Main</b-nav-item>
                 <b-nav-item :to="{ name: 'search' }">Search</b-nav-item>
-                <b-nav-item>
-                    <span v-if="!$root.store.username">
-  <span class="align-items-center">
-    Guest:
-    <b-nav-item class="d-inline-block align-top" :to="{ name: 'register' }">Register</b-nav-item>|
-    <b-nav-item class="d-inline-block align-top" :to="{ name: 'login' }">Login</b-nav-item>
-  </span>
-</span>
-
-                    <span v-else>
-                        {{ $root.store.username }}: <b-button @click="logout" variant="link">Logout</b-button>
-                        <!-- TODO: Change design. -->
-                    </span>
-                </b-nav-item>
+                <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
             </b-navbar-nav>
 
-            <b-navbar-nav>
+
+            <b-navbar-nav v-if="!$root.store.username">
                 <b-nav-item-dropdown right>
                     <template #button-content>
-                        <em>User</em>
+                        <em>Guest</em>
                     </template>
-                    <b-dropdown-item href="#">Profile</b-dropdown-item> <!--TODO: Make button do something -->
-                    <b-dropdown-item href="#">Sign Out</b-dropdown-item> <!--TODO: Make button do something -->
+                    <b-dropdown-item :to="{ name: 'login' }">Log In</b-dropdown-item>
+                    <b-dropdown-item :to="{ name: 'register' }">Register</b-dropdown-item>
+                </b-nav-item-dropdown>
+            </b-navbar-nav>
+
+            <b-navbar-nav v-else>
+                <b-nav-item-dropdown right>
+                    <template #button-content>
+                        <em>{{ $root.store.username }}</em>
+                    </template>
+                    <b-dropdown-item :to="{ name: 'favorites' }">Favorites</b-dropdown-item>
+                    <b-dropdown-item :to="{ name: 'created' }">Created</b-dropdown-item>
+                    <b-dropdown-item :to="{ name: 'familyrecipes' }">Family Recipes</b-dropdown-item>
+                    <b-dropdown-item :to="{ name: 'create' }">Create a Recipe</b-dropdown-item>
+                    <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
         </b-navbar>
         <router-view />
     </div>
 </template>
-
+  
 <script>
 export default {
     name: "App",
@@ -51,7 +52,7 @@ export default {
     },
 };
 </script>
-
+  
 <style lang="scss">
 @import "@/scss/form-style.scss";
 
@@ -82,7 +83,7 @@ export default {
 }
 
 .align-top {
-  margin-bottom: 0px;
+    margin-bottom: 0px;
 }
-
 </style>
+  
