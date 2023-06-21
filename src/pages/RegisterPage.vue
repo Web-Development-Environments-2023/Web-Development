@@ -27,18 +27,18 @@
             <b-form-group id="input-group-Password" label-cols-sm="3" label="Password:" label-for="password">
                 <b-form-input id="password" type="password" v-model="$v.form.password.$model"
                     :state="validateState('password')"></b-form-input>
-                    <b-form-invalid-feedback v-if="!$v.form.password.required">
-                        Password is required.
-                    </b-form-invalid-feedback>
-                    <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.length">
-                        Password must be between 5-10 characters long.
-                    </b-form-invalid-feedback>
-                    <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.containsSpecialChar">
-                        Password must contain at least one special character (!, @, #, etc.).
-                    </b-form-invalid-feedback>
-                    <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.containsDigit">
-                        Password must contain at least one digit.
-                    </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-if="!$v.form.password.required">
+                    Password is required.
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.length">
+                    Password must be between 5-10 characters long.
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.containsSpecialChar">
+                    Password must contain at least one special character (!, @, #, etc.).
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-if="$v.form.password.required && !$v.form.password.containsDigit">
+                    Password must contain at least one digit.
+                </b-form-invalid-feedback>
             </b-form-group>
 
             <b-form-group id="input-group-confirmedPassword" label-cols-sm="3" label="Confirm Password:"
@@ -79,7 +79,9 @@ import {
     sameAs,
     email
 } from "vuelidate/lib/validators";
-import { regex } from "vuelidate/lib/validators";
+
+import { state } from "/src/store.js";
+
 
 const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
 const digitRegex = /\d/;
@@ -126,9 +128,7 @@ export default {
         }
     },
     mounted() {
-        // console.log("mounted");
         this.countries.push(...countries);
-        // console.log($v);
     },
     methods: {
         validateState(param) {
@@ -138,8 +138,7 @@ export default {
         async Register() {
             try {
                 const response = await this.axios.post(
-                    // "https://test-for-3-2.herokuapp.com/user/Register",
-                    this.$root.store.server_domain + "/Register",
+                    state.server_domain + "/register",
 
                     {
                         username: this.form.username,
@@ -147,19 +146,16 @@ export default {
                     }
                 );
                 this.$router.push("/login");
-                // console.log(response);
             } catch (err) {
                 console.log(err.response);
                 this.form.submitError = err.response.data.message;
             }
         },
         onRegister() {
-            // console.log("register method called");
             this.$v.form.$touch();
             if (this.$v.form.$anyError) {
                 return;
             }
-            // console.log("register method go");
             this.Register();
         },
         onReset() {
