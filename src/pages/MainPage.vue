@@ -3,7 +3,7 @@
         <div class="left-column">
             <h2>Explore These Recipes</h2>
             <div class="recipe-list">
-                <div v-for="recipe in randomRecipes" :key="recipe.id">{{ recipe.title }}</div>
+                <RecipePreview v-for="recipe in randomRecipes" :key="recipe.name" :recipe="recipe"></RecipePreview>
             </div>
             <button @click="fetchRandomRecipes">Get New Recipes</button>
         </div>
@@ -14,16 +14,26 @@
             </div>
             <div v-else>
                 <div class="watched-recipes">
-                    <div v-for="recipe in lastWatchedRecipes" :key="recipe.id">{{ recipe.title }}</div>
+                    <div v-if="lastWatchedRecipes.length === 0">
+                        No last viewed recipes found.
+                    </div>
+                    <div v-else v-for="recipe in lastWatchedRecipes" :key="recipe.name">
+                        {{ recipe.name }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-  
+
 <script>
 import { state } from "/src/store.js";
+import RecipePreview from "@/components/RecipePreview.vue";
+
 export default {
+    components: {
+        RecipePreview
+    },
     data() {
         return {
             randomRecipes: [], // Placeholder for random recipes data
@@ -32,7 +42,16 @@ export default {
     },
     methods: {
         fetchRandomRecipes() {
-            this.randomRecipes = state.server_domain + "/recipes/get_random_recipes";
+            this.axios.get(state.server_domain + "/recipes/get_random_recipes")
+                .then(response => {
+                    // Handle the response and extract the recipe data
+                    this.randomRecipes = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Handle the error or update data properties accordingly
+                    this.randomRecipes = [];
+                });
         },
         fetchLastWatchedRecipes() {
             try {
@@ -62,7 +81,7 @@ export default {
     mounted() {
         // Fetch initial data on page load
         this.fetchRandomRecipes(); // Fetch random recipes
-        this.fetchLastWatchedRecipes();// Fetch user login status and last watched recipes
+        this.fetchLastWatchedRecipes(); // Fetch user login status and last watched recipes
     }
 };
 </script>
