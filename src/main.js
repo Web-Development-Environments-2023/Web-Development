@@ -1,3 +1,4 @@
+import VueCookies from "vue-cookies"
 import Vue from "vue";
 import App from "./App.vue";
 import VueAxios from "vue-axios";
@@ -5,10 +6,12 @@ import axios from "axios";
 
 import routes from "./routes";
 import VueRouter from "vue-router";
+
 Vue.use(VueRouter);
 const router = new VueRouter({
   routes,
 });
+axios.defaults.withCredentials=true;
 
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
@@ -65,6 +68,7 @@ axios.interceptors.response.use(
 Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
+Vue.use(VueCookies);
 
 const shared_data = {
   username: localStorage.username,
