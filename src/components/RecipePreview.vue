@@ -30,8 +30,6 @@ export default {
             const payload = {
                 recipeId: this.recipe.id
             };
-            console.log(`recipeId: ${payload.recipeId}`);
-
             this.axios
                 .post(`${state.server_domain}/users/watched`, payload, {
                     headers: {

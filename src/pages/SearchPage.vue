@@ -117,8 +117,6 @@ export default {
                 .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
                 .join("&");
 
-            console.log(`Search string: "${queryString}"`);
-
             const url = state.server_domain + "/recipes/search?" + queryString;
 
             fetch(url)

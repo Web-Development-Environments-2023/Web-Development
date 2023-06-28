@@ -50,8 +50,6 @@ export default {
                 .get(state.server_domain + "/recipes/get_random_recipes")
                 .then((response) => {
                     this.randomRecipes = response.data;
-                    console.log("fetchRandomRecipes:");
-                    console.log(response.data);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -63,8 +61,6 @@ export default {
                 .get(state.server_domain + "/users/watched")
                 .then((response) => {
                     this.lastWatchedRecipes = response.data;
-                    console.log("fetchLastWatchedRecipes:");
-                    console.log(response.data);
                 })
                 .catch((error) => {
                     console.error(error);
