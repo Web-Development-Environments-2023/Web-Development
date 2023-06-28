@@ -3,7 +3,9 @@
         <div class="left-column">
             <h2>Explore These Recipes</h2>
             <div class="recipe-list">
-                <RecipePreview v-for="recipe in randomRecipes" :key="recipe.name" :recipe="recipe"></RecipePreview>
+                <div class="recipe-preview-container" v-for="recipe in randomRecipes" :key="recipe.name">
+                    <RecipePreview :recipe="recipe"></RecipePreview>
+                </div>
             </div>
             <button @click="fetchRandomRecipes">Get New Recipes</button>
         </div>
@@ -17,22 +19,24 @@
                     <div v-if="lastWatchedRecipes.length === 0">
                         No last viewed recipes found.
                     </div>
-                    <div v-else v-for="recipe in lastWatchedRecipes" :key="recipe.name">
-                        {{ recipe.name }}
+                    <div v-else class="recipe-list">
+                        <div class="recipe-preview-container" v-for="recipe in lastWatchedRecipes" :key="recipe.name">
+                            <RecipePreview :recipe="recipe"></RecipePreview>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
+  
 <script>
 import { state } from "/src/store.js";
 import RecipePreview from "@/components/RecipePreview.vue";
 
 export default {
     components: {
-        RecipePreview
+        RecipePreview,
     },
     data() {
         return {
@@ -41,56 +45,51 @@ export default {
         };
     },
     methods: {
-        fetchRandomRecipes() {
-            this.axios.get(state.server_domain + "/recipes/get_random_recipes")
-                .then(response => {
-                    // Handle the response and extract the recipe data
+        async fetchRandomRecipes() {
+            await this.axios
+                .get(state.server_domain + "/recipes/get_random_recipes")
+                .then((response) => {
                     this.randomRecipes = response.data;
+                    console.log("fetchRandomRecipes:");
+                    console.log(response.data);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error(error);
-                    // Handle the error or update data properties accordingly
                     this.randomRecipes = [];
                 });
         },
-        fetchLastWatchedRecipes() {
-            try {
-                // Make an asynchronous call to fetch last watched recipes
-                this.axios.get(state.server_domain + '/users/watched')
-                    .then(response => {
-                        // Handle the response or update data properties
-                        this.lastWatchedRecipes = response.data;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        // Handle the error or update data properties accordingly
-                        this.lastWatchedRecipes = [];
-                    });
-            } catch (error) {
-                console.error(error);
-                // Handle the error or update data properties accordingly
-                this.lastWatchedRecipes = [];
-            }
+        async fetchLastWatchedRecipes() {
+            await this.axios
+                .get(state.server_domain + "/users/watched")
+                .then((response) => {
+                    this.lastWatchedRecipes = response.data;
+                    console.log("fetchLastWatchedRecipes:");
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    this.lastWatchedRecipes = [];
+                });
         },
         redirectToLogin() {
             this.$router.push("/login").catch(() => {
                 this.$forceUpdate();
             });
-        }
+        },
     },
     mounted() {
         // Fetch initial data on page load
         this.fetchRandomRecipes(); // Fetch random recipes
         this.fetchLastWatchedRecipes(); // Fetch user login status and last watched recipes
-    }
+    },
 };
 </script>
   
 <style>
 .main-page {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    padding: 0 20px;
+    /* Add padding to the sides */
 }
 
 .left-column {
@@ -102,38 +101,15 @@ export default {
     flex: 1;
 }
 
-h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
 .recipe-list {
-    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.recipe-list div {
-    margin-bottom: 10px;
-}
-
-.button-container {
-    margin-top: 20px;
-}
-
-.button-container button {
-    padding: 10px 15px;
-    font-size: 16px;
-}
-
-.watched-recipes {
-    margin-bottom: 20px;
-}
-
-.watched-recipes div {
-    margin-bottom: 10px;
-}
-
-.button-container button {
-    padding: 10px 15px;
-    font-size: 16px;
+.recipe-preview-container {
+    flex: 0 0 100%;
+    /* Each recipe preview container takes 100% width */
+    padding-bottom: 20px;
 }
 </style>
+  
