@@ -11,24 +11,28 @@
             <div class="filters-container">
                 <select v-model="selectedCuisine" @change="applyFilters">
                     <option value="">No Cuisine Filter</option>
-                    <option v-for="cuisine in cuisines" :key="cuisine" :value="cuisine">{{ cuisine }}</option>
+                    <option v-for="cuisine in cuisinesList" :key="cuisine" :value="cuisine">{{ cuisine }}</option>
                 </select>
                 <select v-model="selectedDiet" @change="applyFilters">
                     <option value="">No Diet Filter</option>
-                    <option v-for="diet in diets" :key="diet" :value="diet">{{ diet }}</option>
+                    <option v-for="diet in dietsList" :key="diet" :value="diet">{{ diet }}</option>
                 </select>
                 <select v-model="selectedIntolerance" @change="applyFilters">
                     <option value="">No Intolerance Filter</option>
-                    <option v-for="intolerance in intolerances" :key="intolerance" :value="intolerance">{{ intolerance }}
+                    <option v-for="intolerance in intolerancesList" :key="intolerance" :value="intolerance">
+                        {{ intolerance }}
                     </option>
                 </select>
             </div>
+            <button @click="searchRecipes">Search</button>
         </div>
         <div v-if="searchResults.length > 0">
             <h2>Search Results</h2>
-            <ul>
-                <li v-for="result in searchResults" :key="result.id">{{ result.title }}</li>
-            </ul>
+            <div v-if="searchResults.length > 0">
+                <div class="recipe-list">
+                    <RecipePreview v-for="result in searchResults" :key="result.recipeId" :recipe="result"></RecipePreview>
+                </div>
+            </div>
         </div>
         <div v-else-if="isSearching">
             <p>Loading...</p>
@@ -38,10 +42,15 @@
         </div>
     </div>
 </template>
-
+  
 <script>
 import { state } from "/src/store.js";
+import RecipePreview from "@/components/RecipePreview.vue";
+
 export default {
+    components: {
+        RecipePreview
+    },
     name: "SearchPage",
     data() {
         return {
@@ -53,9 +62,39 @@ export default {
             searchResults: [],
             isSearching: false,
             previousSearch: localStorage.getItem("previousSearch") || "",
-            cuisines: ["African", "American", "British", "Cajun", "Caribbean", "Chinese", "European", "French", "German"],
-            diets: ["Gluten Free", "Ketogenic", "Vegetarian", "Vegan", "Pescetarian", "Paleo"],
-            intolerances: ["Dairy", "Egg", "Gluten", "Grain", "Peanut", "Seafood", "Sesame", "Shellfish", "Soy", "Sulfite", "Tree Nut", "Wheat"]
+            cuisinesList: [
+                "African",
+                "American",
+                "British",
+                "Cajun",
+                "Caribbean",
+                "Chinese",
+                "European",
+                "French",
+                "German",
+            ],
+            dietsList: [
+                "Gluten Free",
+                "Ketogenic",
+                "Vegetarian",
+                "Vegan",
+                "Pescetarian",
+                "Paleo",
+            ],
+            intolerancesList: [
+                "Dairy",
+                "Egg",
+                "Gluten",
+                "Grain",
+                "Peanut",
+                "Seafood",
+                "Sesame",
+                "Shellfish",
+                "Soy",
+                "Sulfite",
+                "Tree Nut",
+                "Wheat",
+            ],
         };
     },
     methods: {
@@ -65,45 +104,36 @@ export default {
         searchRecipes() {
             this.isSearching = true;
 
-            // Prepare the search parameters
             const searchParams = {
-                searchQuery: this.searchQuery,
-                resultsCount: this.resultsCount,
-                selectedCuisine: this.selectedCuisine,
-                selectedDiet: this.selectedDiet,
-                selectedIntolerance: this.selectedIntolerance
+                Search_text: this.searchQuery,
+                Num_of_results: parseInt(this.resultsCount),
+                cuisines: this.selectedCuisine ? [this.selectedCuisine] : [],
+                diets: this.selectedDiet ? [this.selectedDiet] : [],
+                intolerances: this.selectedIntolerance ? [this.selectedIntolerance] : [],
             };
 
-            // Perform the API call or fetch request using the search parameters
-            fetch(state.server_domain + "/recipes/search", {
-                method: 'POST',
-                body: JSON.stringify(searchParams),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    this.searchResults = data;
-                    console.log("Recived data."); // TODO:
-                })
-                .catch(error => {
-                    console.error('Error searching recipes:', error);
-                })
-                .finally(() => {
-                    this.isSearching = false;
-                });
+            const queryString = Object.entries(searchParams)
+                .filter(([key, value]) => value !== undefined && value !== "")
+                .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+                .join("&");
+
+            console.log(`Search string: "${queryString}"`);
+
+            const url = state.server_domain + "/recipes/search?" + queryString;
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => { this.searchResults = data; })
+                .catch((error) => { console.error("Error searching recipes:", error); })
+                .finally(() => { this.isSearching = false; });
         },
-        applyFilters() {
-            this.searchRecipes();
-        }
+        applyFilters() { },
     },
     mounted() {
         if (this.previousSearch) {
             this.searchQuery = this.previousSearch;
-            this.searchRecipes();
         }
-    }
+    },
 };
 </script>
 
@@ -119,6 +149,12 @@ export default {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
 }
 
 ul {
