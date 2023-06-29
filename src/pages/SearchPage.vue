@@ -32,6 +32,9 @@
         <div v-if="searchResults.length > 0">
             <h2>Search Results</h2>
             <div v-if="searchResults.length > 0">
+                <button @click="sortRecipesByPopularity">Sort by Popularity</button>
+                <button @click="sortRecipesByTime">Sort by Time to Make</button>
+
                 <div class="recipe-list">
                     <RecipePreview v-for="result in searchResults" :key="result.recipeId" :recipe="result"></RecipePreview>
                 </div>
@@ -128,7 +131,16 @@ export default {
                     localStorage.setItem("previousSearch", searchParams.Search_text);
                 });
         },
+
         applyFilters() { },
+
+        sortRecipesByPopularity() {
+            this.searchResults.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+        },
+
+        sortRecipesByTime() {
+            this.searchResults.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
+        },
     },
     mounted() {
         if (this.previousSearch) {
