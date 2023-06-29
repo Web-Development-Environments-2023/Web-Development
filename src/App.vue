@@ -52,7 +52,7 @@ export default {
     logout() {
       this.$root.store.logout();
       this.$root.toast("Logout", "User logged out successfully", "success");
-
+      localStorage.removeItem("previousSearch");
       this.$router.push("/").catch(() => {
         this.$forceUpdate();
       });
