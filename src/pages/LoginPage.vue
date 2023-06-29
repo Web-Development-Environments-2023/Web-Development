@@ -70,6 +70,7 @@ export default {
                         password: this.form.password
                     }
                 );
+                localStorage.removeItem("previousSearch");
                 this.$root.store.login(this.form.username);
                 this.$router.push("/");
             } catch (err) {

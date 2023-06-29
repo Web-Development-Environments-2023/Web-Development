@@ -1,8 +1,11 @@
 <template>
     <div>
         <h1>Recipe Search</h1>
+        <div v-if="previousSearch">
+            <h3>Searched last visit: "{{ previousSearch }}"</h3>
+        </div>
         <div class="search-container">
-            <input type="text" v-model="searchQuery" placeholder="Search for recipes" @input="saveSearchQuery" />
+            <input type="text" v-model="searchQuery" placeholder="Search for recipes" />
             <select v-model="resultsCount">
                 <option value="5">5 results</option>
                 <option value="10">10 results</option>
@@ -29,6 +32,9 @@
         <div v-if="searchResults.length > 0">
             <h2>Search Results</h2>
             <div v-if="searchResults.length > 0">
+                <button @click="sortRecipesByPopularity">Sort by Popularity</button>
+                <button @click="sortRecipesByTime">Sort by Time to Make</button>
+
                 <div class="recipe-list">
                     <RecipePreview v-for="result in searchResults" :key="result.recipeId" :recipe="result"></RecipePreview>
                 </div>
@@ -98,9 +104,6 @@ export default {
         };
     },
     methods: {
-        saveSearchQuery() {
-            localStorage.setItem("previousSearch", this.searchQuery);
-        },
         searchRecipes() {
             this.isSearching = true;
 
@@ -123,9 +126,21 @@ export default {
                 .then((response) => response.json())
                 .then((data) => { this.searchResults = data; })
                 .catch((error) => { console.error("Error searching recipes:", error); })
-                .finally(() => { this.isSearching = false; });
+                .finally(() => {
+                    this.isSearching = false;
+                    localStorage.setItem("previousSearch", searchParams.Search_text);
+                });
         },
+
         applyFilters() { },
+
+        sortRecipesByPopularity() {
+            this.searchResults.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+        },
+
+        sortRecipesByTime() {
+            this.searchResults.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
+        },
     },
     mounted() {
         if (this.previousSearch) {
