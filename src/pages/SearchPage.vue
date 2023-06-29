@@ -1,8 +1,11 @@
 <template>
     <div>
         <h1>Recipe Search</h1>
+        <div v-if="previousSearch">
+            <h3>Searched last visit: "{{ previousSearch }}"</h3>
+        </div>
         <div class="search-container">
-            <input type="text" v-model="searchQuery" placeholder="Search for recipes" @input="saveSearchQuery" />
+            <input type="text" v-model="searchQuery" placeholder="Search for recipes" />
             <select v-model="resultsCount">
                 <option value="5">5 results</option>
                 <option value="10">10 results</option>
@@ -98,9 +101,6 @@ export default {
         };
     },
     methods: {
-        saveSearchQuery() {
-            localStorage.setItem("previousSearch", this.searchQuery);
-        },
         searchRecipes() {
             this.isSearching = true;
 
@@ -123,7 +123,10 @@ export default {
                 .then((response) => response.json())
                 .then((data) => { this.searchResults = data; })
                 .catch((error) => { console.error("Error searching recipes:", error); })
-                .finally(() => { this.isSearching = false; });
+                .finally(() => {
+                    this.isSearching = false;
+                    localStorage.setItem("previousSearch", searchParams.Search_text);
+                });
         },
         applyFilters() { },
     },
