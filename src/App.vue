@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#">RecipeWebsite</b-navbar-brand>
+      <b-navbar-brand :to="{ name: 'main' }">RecipeWebsite</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-navbar-nav class="align-items-center">
         <b-nav-item :to="{ name: 'main' }">Main</b-nav-item>
