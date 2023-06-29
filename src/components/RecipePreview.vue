@@ -23,6 +23,11 @@
 import { state } from "/src/store.js";
 
 export default {
+  data() {
+    return {
+      isFavorite: false,
+    }
+  },
   name: "RecipePreview",
   props: {
     recipe: {
@@ -128,6 +133,7 @@ export default {
 
 .add-to-favorite {
   color: red;
+  width: 100%;
 }
 
 .fav-no-logged-in {
