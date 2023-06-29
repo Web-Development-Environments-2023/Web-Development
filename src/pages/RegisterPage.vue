@@ -2,6 +2,7 @@
     <div class="container">
         <h1 class="title">Register</h1>
         <b-form @submit.prevent="onRegister" @reset.prevent="onReset">
+
             <b-form-group id="input-group-username" label-cols-sm="3" label="Username:" label-for="username">
                 <b-form-input id="username" v-model="$v.form.username.$model" type="text"
                     :state="validateState('username')"></b-form-input>
@@ -13,14 +14,6 @@
                 </b-form-invalid-feedback>
                 <b-form-invalid-feedback v-if="!$v.form.username.alpha">
                     Username must only alphabetic characters.
-                </b-form-invalid-feedback>
-            </b-form-group>
-
-            <b-form-group id="input-group-country" label-cols-sm="3" label="Country:" label-for="country">
-                <b-form-select id="country" v-model="$v.form.country.$model" :options="countries"
-                    :state="validateState('country')"></b-form-select>
-                <b-form-invalid-feedback>
-                    Country is required
                 </b-form-invalid-feedback>
             </b-form-group>
 
@@ -50,6 +43,47 @@
                 </b-form-invalid-feedback>
                 <b-form-invalid-feedback v-else-if="!$v.form.confirmedPassword.sameAsPassword">
                     The password confirmation does not match the password field.
+                </b-form-invalid-feedback>
+            </b-form-group>
+
+            <b-form-group id="input-group-email" label-cols-sm="3" label="Email:" label-for="email">
+                <b-form-input id="email" v-model="$v.form.email.$model" type="email"
+                    :state="validateState('email')"></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.email.required">
+                    Email is required.
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-else-if="!$v.form.email.email">
+                    Please enter a valid email address.
+                </b-form-invalid-feedback>
+            </b-form-group>
+
+            <b-form-group id="input-group-firstName" label-cols-sm="3" label="First Name:" label-for="firstName">
+                <b-form-input id="firstName" v-model="$v.form.firstName.$model" type="text"
+                    :state="validateState('firstName')"></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.firstName.required">
+                    First name is required.
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-else-if="!$v.form.firstName.alpha">
+                    First name must only contain alphabetic characters.
+                </b-form-invalid-feedback>
+            </b-form-group>
+
+            <b-form-group id="input-group-lastName" label-cols-sm="3" label="Last Name:" label-for="lastName">
+                <b-form-input id="lastName" v-model="$v.form.lastName.$model" type="text"
+                    :state="validateState('lastName')"></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.lastName.required">
+                    Last name is required.
+                </b-form-invalid-feedback>
+                <b-form-invalid-feedback v-else-if="!$v.form.lastName.alpha">
+                    Last name must only contain alphabetic characters.
+                </b-form-invalid-feedback>
+            </b-form-group>
+
+            <b-form-group id="input-group-country" label-cols-sm="3" label="Country:" label-for="country">
+                <b-form-select id="country" v-model="$v.form.country.$model" :options="countries"
+                    :state="validateState('country')"></b-form-select>
+                <b-form-invalid-feedback>
+                    Country is required
                 </b-form-invalid-feedback>
             </b-form-group>
 
@@ -124,7 +158,19 @@ export default {
             confirmedPassword: {
                 required,
                 sameAsPassword: sameAs("password")
-            }
+            },
+            email: {
+                required,
+                email
+            },
+            firstName: {
+                required,
+                alpha,
+            },
+            lastName: {
+                required,
+                alpha,
+            },
         }
     },
     mounted() {
@@ -142,7 +188,11 @@ export default {
 
                     {
                         username: this.form.username,
-                        password: this.form.password
+                        firstname: this.form.firstName,
+                        lastname: this.form.lastName,
+                        country: this.form.country,
+                        password: this.form.password,
+                        email: this.form.email
                     }
                 );
                 this.$router.push("/login");
