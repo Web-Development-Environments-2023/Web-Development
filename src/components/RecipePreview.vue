@@ -66,7 +66,7 @@ export default {
             'Content-Type': 'application/json'
           }
         })
-        .then(response => { /* console.log('Recipe ID logged successfully:', response.data); */ })
+        .then(response => { this.isFavorite = true; })
         .catch(error => { console.error('Error logging recipe ID:', error); })
     },
     async checkFavorite() {
