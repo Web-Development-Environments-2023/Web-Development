@@ -25,7 +25,7 @@
             <em>{{ $root.store.username }}</em>
           </template>
           <b-dropdown-item :to="{ name: 'favorites' }">Favorites</b-dropdown-item>
-          <b-dropdown-item :to="{ name: 'created' }">Created</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'created' }">My recipes</b-dropdown-item>
           <b-dropdown-item :to="{ name: 'familyrecipes' }">Family Recipes</b-dropdown-item>
           <b-dropdown-item @click="openCreateModal">Create a Recipe</b-dropdown-item>
           <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
