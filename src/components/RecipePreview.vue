@@ -35,14 +35,10 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      isFavorite: false,
-    }
+  created: async function () {
+    this.isFavorite = await this.checkFavorite();
   },
-  created() {
-    this.isFavorite = this.checkFavorite();
-  },
+
   methods: {
     navigateToRecipe(event) {
       if (event.target.tagName !== 'BUTTON') {
@@ -73,11 +69,12 @@ export default {
         .then(response => { /* console.log('Recipe ID logged successfully:', response.data); */ })
         .catch(error => { console.error('Error logging recipe ID:', error); })
     },
-    async isFavorite() {
+    async checkFavorite() {
       try {
         const response = await this.axios.get(state.server_domain + "/users/favorites");
         this.favorites = response.data;
-        return this.favorites.some(recipe => recipe.recipeId === recipeId);
+
+        return this.favorites.some(favorite => favorite.id === this.recipe.id);
       }
       catch (error) {
         console.error(error);
