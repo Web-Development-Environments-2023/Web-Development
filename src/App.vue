@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand :to="{ name: 'main' }">RecipeWebsite</b-navbar-brand>
+      <b-navbar-brand :to="{ name: 'main' }">Recipe-ND</b-navbar-brand>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-navbar-nav class="align-items-center">
         <b-nav-item :to="{ name: 'main' }">Main</b-nav-item>
@@ -25,7 +25,7 @@
             <em>{{ $root.store.username }}</em>
           </template>
           <b-dropdown-item :to="{ name: 'favorites' }">Favorites</b-dropdown-item>
-          <b-dropdown-item :to="{ name: 'created' }">Created</b-dropdown-item>
+          <b-dropdown-item :to="{ name: 'created' }">My recipes</b-dropdown-item>
           <b-dropdown-item :to="{ name: 'familyrecipes' }">Family Recipes</b-dropdown-item>
           <b-dropdown-item @click="openCreateModal">Create a Recipe</b-dropdown-item>
           <b-dropdown-item @click="logout">Log Out</b-dropdown-item>
