@@ -10,7 +10,7 @@
             <button v-else class="in-favorites">In favorites</button>
           </div>
           <p>Ready in {{ recipe.readyInMinutes }} minutes.</p>
-          <p>Popularity: {{ recipe.aggregateLikes }}.</p>
+          <p>Popularity: {{ recipe.popularity || recipe.aggregateLikes }}.</p>
           <p>Vegan: {{ recipe.vegan ? 'Yes' : 'No' }}.</p>
           <p>Gluten-free: {{ recipe.glutenFree ? 'Yes' : 'No' }}.</p>
         </div>
