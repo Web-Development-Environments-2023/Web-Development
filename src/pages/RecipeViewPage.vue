@@ -4,6 +4,11 @@
             <h1>{{ recipe.title }}</h1>
         </template>
         <img :src="recipe.image" alt="Recipe Image" class="recipe-image" />
+        <div class="fav-to-the-right">
+            <button v-if="!$root.store.username" class="fav-no-logged-in">Log in to add to favs</button>
+            <button v-else-if="!isFavorite" class="add-to-favorite" @click="addToFavorites">Add to favorite</button>
+            <button v-else class="in-favorites">In favorites</button>
+        </div>
         <b-card-text>
             <p>Ready in {{ recipe.readyInMinutes }} minutes.</p>
             <p>Popularity: {{ recipe.popularity }}.</p>
@@ -33,7 +38,8 @@ import { state } from "/src/store.js";
 export default {
     data() {
         return {
-            recipe: null
+            recipe: null,
+            isFavorite: false,
         };
     },
     async created() {
@@ -75,9 +81,40 @@ export default {
                 preperation_steps,
                 num_of_servings
             };
+            this.isFavorite = await this.checkFavorite();
+
         } catch (error) {
             console.log(error);
         }
+    },
+
+
+    methods: {
+        addToFavorites() {
+            const payload = {
+                recipeId: this.recipe.id
+            };
+            this.axios
+                .post(`${state.server_domain}/users/favorites`, payload, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => { this.isFavorite = true; })
+                .catch(error => { console.error('Error logging recipe ID:', error); })
+        },
+        async checkFavorite() {
+            try {
+                const response = await this.axios.get(state.server_domain + "/users/favorites");
+                this.favorites = response.data;
+
+                return this.favorites.some(favorite => favorite.id === this.recipe.id);
+            }
+            catch (error) {
+                console.error(error);
+                return false;
+            }
+        },
     }
 };
 </script>
@@ -137,5 +174,27 @@ export default {
     text-align: center;
     font-size: 18px;
     padding: 20px;
+}
+
+.add-to-favorite {
+    color: red;
+    width: 100%;
+}
+
+.fav-no-logged-in {
+    color: red;
+    background-color: lightgray;
+    cursor: not-allowed;
+}
+
+.in-favorites {
+    color: red;
+    background-color: lightgray;
+    cursor: not-allowed;
+}
+
+.fav-to-the-right {
+    display: flex;
+    justify-content: flex-end;
 }
 </style>

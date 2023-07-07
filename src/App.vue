@@ -34,7 +34,7 @@
     </b-navbar>
     <router-view />
 
-    <CreateRecipePage v-if="showCreateModal" @close="showCreateModal = false" />
+    <CreateRecipePage v-if="showCreateModal" @close="closeCreateModal" />
   </div>
 </template>
 
@@ -60,6 +60,9 @@ export default {
     openCreateModal() {
       this.showCreateModal = true;
     },
+    closeCreateModal(){
+      this.showCreateModal = false;
+    }
   },
   components: {
     CreateRecipePage,
