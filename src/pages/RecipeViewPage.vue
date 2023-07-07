@@ -9,6 +9,10 @@
             <button v-else-if="!isFavorite" class="add-to-favorite" @click="addToFavorites">Add to favorite</button>
             <button v-else class="in-favorites">In favorites</button>
         </div>
+        <div class="fav-to-the-right">
+            <span v-if="!isWatched"></span>
+            <span v-else>👀</span>
+        </div>
         <b-card-text>
             <p>Ready in {{ recipe.readyInMinutes }} minutes.</p>
             <p>Popularity: {{ recipe.popularity }}.</p>
@@ -82,7 +86,7 @@ export default {
                 num_of_servings
             };
             this.isFavorite = await this.checkFavorite();
-
+            this.isWatched = await this.checkWavorite();
         } catch (error) {
             console.log(error);
         }
@@ -109,6 +113,18 @@ export default {
                 this.favorites = response.data;
 
                 return this.favorites.some(favorite => favorite.id === this.recipe.id);
+            }
+            catch (error) {
+                console.error(error);
+                return false;
+            }
+        },
+        async checkWatched() {
+            try {
+                const response = await this.axios.get(state.server_domain + "/users/watched");
+                this.watched = response.data;
+
+                return this.watched.some(watched => watched.id === this.recipe.id);
             }
             catch (error) {
                 console.error(error);
