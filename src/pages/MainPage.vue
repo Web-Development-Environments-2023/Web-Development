@@ -60,7 +60,7 @@ export default {
             await this.axios
                 .get(state.server_domain + "/users/watched")
                 .then((response) => {
-                    this.lastWatchedRecipes = response.data;
+                    this.lastWatchedRecipes = response.data.slice(0, 3);
                 })
                 .catch((error) => {
                     console.error(error);
