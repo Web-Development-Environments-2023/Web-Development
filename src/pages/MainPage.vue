@@ -4,7 +4,7 @@
             <h2>Explore These Recipes</h2>
             <div class="recipe-list">
                 <div class="recipe-preview-container" v-for="recipe in randomRecipes" :key="recipe.name">
-                    <RecipePreview :recipe="recipe"></RecipePreview>
+                    <RecipePreview :recipe="recipe" customClass="main-page-preview"></RecipePreview>
                 </div>
             </div>
             <button @click="fetchRandomRecipes">Get New Recipes</button>
@@ -21,7 +21,7 @@
                     </div>
                     <div v-else class="recipe-list">
                         <div class="recipe-preview-container" v-for="recipe in lastWatchedRecipes" :key="recipe.name">
-                            <RecipePreview :recipe="recipe"></RecipePreview>
+                            <RecipePreview :recipe="recipe" customClass="main-page-preview"></RecipePreview>
                         </div>
                     </div>
                 </div>
@@ -105,6 +105,11 @@ export default {
 .recipe-preview-container {
     flex: 0 0 100%;
     /* Each recipe preview container takes 100% width */
+    padding-bottom: 20px;
+}
+
+.main-page-preview {
+    flex: 0 0 100%;
     padding-bottom: 20px;
 }
 </style>

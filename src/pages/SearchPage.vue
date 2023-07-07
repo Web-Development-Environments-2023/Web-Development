@@ -164,12 +164,6 @@ export default {
     gap: 10px;
 }
 
-.recipe-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 20px;
-}
-
 ul {
     list-style-type: none;
     padding: 0;
@@ -177,5 +171,13 @@ ul {
 
 li {
     margin-bottom: 5px;
+}
+</style>
+
+<style scoped>
+.recipe-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
 }
 </style>
