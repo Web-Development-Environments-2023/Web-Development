@@ -44,6 +44,7 @@ export default {
         return {
             recipe: null,
             isFavorite: false,
+            isWatched: false,
         };
     },
     async created() {
@@ -86,7 +87,7 @@ export default {
                 num_of_servings
             };
             this.isFavorite = await this.checkFavorite();
-            this.isWatched = await this.checkWavorite();
+            this.isWatched = await this.checkWatched();
         } catch (error) {
             console.log(error);
         }
