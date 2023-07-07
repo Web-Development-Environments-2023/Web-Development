@@ -64,6 +64,7 @@ export default {
             }
 
             let {
+                id,
                 image,
                 title,
                 readyInMinutes,
@@ -76,6 +77,7 @@ export default {
             } = response.data[0];
 
             this.recipe = {
+                id,
                 image,
                 title,
                 readyInMinutes,

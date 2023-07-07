@@ -71,7 +71,7 @@ export default {
                     },
                 })
                 .then(response => {
-                    /* console.log('Recipe ID logged successfully:', response.data); */
+                    console.log('Recipe ID logged successfully:', response.data);
                 })
                 .catch(error => {
                     console.error('Error logging recipe ID:', error);
