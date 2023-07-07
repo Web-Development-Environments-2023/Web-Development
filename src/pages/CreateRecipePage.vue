@@ -1,5 +1,5 @@
 <template>
-    <b-modal v-model="modalVisible" title="Create Recipe">
+    <b-modal v-model="modalVisible" title="Create Recipe" @hidden="$emit('close')">
         <form @submit.prevent="createRecipe">
             <b-form-group label="Image URL:" label-for="image-input">
                 <b-form-input id="image-input" v-model="recipe.image" required></b-form-input>
