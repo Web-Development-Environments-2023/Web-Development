@@ -51,21 +51,44 @@ export default {
 }
 
 .recipe-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .recipe-preview-container {
-  flex: 0 0 100%;
-  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.recipe-preview-container:last-child {
-  margin-bottom: 0;
+.recipe-preview-container:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.loading-message {
+.recipe-preview-container img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recipe-preview-details {
+  padding: 20px;
+}
+
+.recipe-preview-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.recipe-preview-description {
+  font-size: 14px;
+  color: #888;
+}
+
+.no-recipes-message {
   margin-top: 20px;
   font-size: 18px;
   text-align: center;

@@ -112,10 +112,9 @@ export default {
         },
         async checkFavorite() {
             try {
-                const response = await this.axios.get(state.server_domain + "/users/favorites");
-                this.favorites = response.data;
-
-                return this.favorites.some(favorite => favorite.id === this.recipe.id);
+                const response = await this.axios.get(state.server_domain + "/users/favoritesid");
+                const favoritesid = response.data;
+                return favoritesid.some(favorite => favorite === this.recipe.id);
             }
             catch (error) {
                 console.error(error);
@@ -124,10 +123,9 @@ export default {
         },
         async checkWatched() {
             try {
-                const response = await this.axios.get(state.server_domain + "/users/watched");
-                this.watched = response.data;
-
-                return this.watched.some(watched => watched.id === this.recipe.id);
+                const response = await this.axios.get(state.server_domain + "/users/watchedid");
+                const watchedid = response.data;
+                return watchedid.some(watched => watched === this.recipe.id);
             }
             catch (error) {
                 console.error(error);
