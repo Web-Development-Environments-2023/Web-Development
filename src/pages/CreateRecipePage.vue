@@ -1,6 +1,6 @@
 <template>
     <b-modal v-model="modalVisible" title="Create Recipe" @hidden="$emit('close')">
-        <form @submit.prevent="createRecipe">
+        <form @submit="submitForm">
             <b-form-group label="Image URL:" label-for="image-input">
                 <b-form-input id="image-input" v-model="recipe.image" required></b-form-input>
             </b-form-group>
@@ -28,6 +28,11 @@
 
             <b-button type="submit">Create Recipe</b-button>
         </form>
+        <div v-if="errorMsg" class="alert">
+            <h2>Error!</h2>
+            <p>{{ errorMessage }}</p>
+            <button @click="resetError">Close</button>
+        </div>
     </b-modal>
 </template>
 
@@ -49,9 +54,14 @@ export default {
                 preparationSteps: "",
                 numOfServings: null,
             },
+            errorMsg: null
         };
     },
     methods: {
+        submitForm(){
+            this.createRecipe();
+            this,this.modalVisible = false;
+        },
         createRecipe() {
             const payload = {
                 image: this.recipe.image,
@@ -75,8 +85,12 @@ export default {
                 })
                 .catch(error => {
                     console.error('Error logging recipe ID:', error);
+                    this.errorMsg = error.message;
                 })
         },
+        resetError() {
+            this.errorMsg = null; // Reset the error message
+        }
     },
 };
 </script>
