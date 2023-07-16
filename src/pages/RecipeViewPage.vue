@@ -115,7 +115,7 @@ export default {
             try {
                 const response = await this.axios.get(state.server_domain + "/users/favoritesid");
                 const favoritesid = response.data;
-                return favoritesid.some(favorite => favorite === this.recipe.id);
+                return favoritesid.some(favorite => favorite.recipe_id === this.recipe.id);
             }
             catch (error) {
                 console.error(error);
