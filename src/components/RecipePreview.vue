@@ -6,7 +6,7 @@
           <h3 class="recipe-title">{{ recipe.title }}</h3>
           <div class="fav-to-the-right">
             <button v-if="!$root.store.username" class="fav-no-logged-in">Log in to add to favs</button>
-            <button v-else-if="!isFavorite" class="add-to-favorite" @click="addToFavorites">Add to favorite</button>
+            <button v-else-if="!isFavorite" class="add-to-favorite" @click="addToFavorites($event)">Add to favorite</button>
             <button v-else class="in-favorites">In favorites</button>
           </div>
           <div class="fav-to-the-right">
@@ -62,7 +62,8 @@ export default {
           .finally(() => { this.$router.push({ name: 'recipe', params: { recipeId: payload.recipeId } }); });
       }
     },
-    addToFavorites() {
+    addToFavorites(event) {
+      event.preventDefault();
       const payload = {
         recipeId: this.recipe.id
       };

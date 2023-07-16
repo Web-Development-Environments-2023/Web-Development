@@ -6,7 +6,7 @@
         <img :src="recipe.image" alt="Recipe Image" class="recipe-image" />
         <div class="fav-to-the-right">
             <button v-if="!$root.store.username" class="fav-no-logged-in">Log in to add to favs</button>
-            <button v-else-if="!isFavorite" class="add-to-favorite" @click="addToFavorites">Add to favorite</button>
+            <button v-else-if="!isFavorite" class="add-to-favorite" @click="addToFavorites($event)">Add to favorite</button>
             <button v-else class="in-favorites">In favorites</button>
         </div>
         <div class="fav-to-the-right">
@@ -97,7 +97,8 @@ export default {
 
 
     methods: {
-        addToFavorites() {
+        addToFavorites(event) {
+            event.preventDefault();
             const payload = {
                 recipeId: this.recipe.id
             };

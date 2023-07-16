@@ -1,8 +1,8 @@
 <template>
   <div class="favorite-recipes">
     <div class="recipe-list">
-      <div class="recipe-preview-container" v-for="recipe in favorite" :key="recipe.name">
-        <RecipePreview :recipe="recipe"></RecipePreview>
+      <div class="fav-recipe-preview-container" v-for="recipe in favorite" :key="recipe.name">
+        <RecipePreview :recipe="recipe" customClass="main-page-preview"></RecipePreview>
       </div>
       <div v-if="loading" class="loading-message">Loading favorite recipes...</div>
       <div v-if="favorite.length === 0 && !loading" class="no-recipes-message">No favorite recipes found.</div>
@@ -56,13 +56,18 @@ export default {
   justify-content: space-between;
 }
 
-.recipe-preview-container {
-  flex: 0 0 100%;
+.fav-recipe-preview-container {
+  flex: 0 0 50%;
   margin-bottom: 20px;
 }
 
-.recipe-preview-container:last-child {
+.fav-recipe-preview-container:last-child {
   margin-bottom: 0;
+}
+
+.main-page-preview {
+    flex: 0 0 10%;
+    padding-bottom: 20px;
 }
 
 .loading-message {
